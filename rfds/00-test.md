@@ -1,6 +1,7 @@
 ---
 authors: ["Jonas Kruckenberg", "Test Human"]
-title: "Everything new in Astro Micro"
+title: "Test RFD"
+state: "discussion"
 ---
 
 ## Headings
