@@ -1,0 +1,26 @@
+---
+interface Props {
+    label?: string;
+}
+
+const { label = "default" } = Astro.props;
+
+const baseClasses = "font-mono text-xs uppercase rounded-xs px-1 py-0.5 border items-center whitespace-nowrap";
+const typeClasses = {
+    default: "bg-gray-900/20 text-gray-400 border-gray-400/20",
+    discussion:
+        "bg-indigo-900/20 text-indigo-400 border-indigo-500/20",
+    committed: "bg-emerald-900/20 text-emerald-500 border-emerald-500/20",
+    published:
+        "bg-emerald-900/20 text-emerald-500 border-emerald-500/20",
+    abandoned:
+        "bg-red-900/20 text-red-600 border-red-700/20",
+
+}
+---
+<span
+        class:list={[baseClasses, typeClasses[label]]}
+>
+
+    <slot />
+</span>

@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Label from "@components/Label.astro";
+
+type Props = {
+  entry: CollectionEntry<"rfd">;
+};
+
+const { entry } = Astro.props as {
+  entry: CollectionEntry<"rfd">
+};
+---
+
+<a
+  href={`/${entry.collection}/${entry.id}`}
+  class="flex flex-nowrap group relative m-auto max-w-1200 text-md rounded-md border-secondary 800:h-20 md border transition-colors duration-300 ease-in-out border-white/20 hover:bg-white/5 hover:text-white focus-visible:bg-white/5 focus-visible:text-white"
+>
+  <div class="grid grid-cols-6 grow items-center 800:gap-6 800:py-0 h-full w-full gap-2 px-5 py-4">
+    <div class="col-span-3 -m-2 inline-flex flex-col p-2">
+      <div>
+        RFD {entry.data.number}
+      </div>
+      <div class="text-default line-clamp-2">
+        {entry.data.title}
+      </div>
+    </div>
+    <div>
+      <Label label={entry.data.state}>{entry.data.state}</Label>
+    </div>
+    <div class="col-span-2">
+      {
+        entry.data.labels && entry.data.labels?.length > 0 ? (
+            <div class="flex gap-2 pt-1">
+              {entry.data.labels.map((label) => <Label>{label}</Label>)}
+            </div>
+        ) : null
+      }
+    </div>
+  </div>
+</a>

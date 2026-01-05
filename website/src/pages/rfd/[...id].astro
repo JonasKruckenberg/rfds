@@ -1,0 +1,57 @@
+---
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import FormattedDate from "@components/FormattedDate.astro";
+import BackToPrevious from "@components/BackToPrevious.astro";
+import TableOfContents from "@components/TableOfContents.astro";
+import Label from "@components/Label.astro";
+
+export async function getStaticPaths() {
+  const rfds = (await getCollection("rfd"))
+    .sort((a, b) => b.data.updatedAt.valueOf() - a.data.updatedAt.valueOf());
+
+  return rfds.map((rfd) => ({
+    params: { id: rfd.id },
+    props: rfd,
+  }));
+}
+type Props = CollectionEntry<"rfd">;
+
+const post = Astro.props;
+const { Content, headings } = await render(post);
+---
+
+<Layout title={post.data.title} description="k23 RFD">
+  <Container>
+    <div class="animate">
+      <BackToPrevious href="/rfd">Back to RFDs</BackToPrevious>
+    </div>
+    <div class="my-10 space-y-1">
+      <div class="animate flex items-center gap-1.5">
+        <div class="font-base text-sm">
+          {post.data.authors.join(", ")}
+        </div>
+        &bull;
+        <div class="font-base text-sm">
+          Last Updated:
+          <FormattedDate date={post.data.updatedAt} />
+        </div>
+      </div>
+      <h1 class="animate text-3xl font-semibold text-white">
+        {post.data.title}
+      </h1>
+      {
+        post.data.labels && post.data.labels?.length > 0 ? (
+          <div class="animate flex gap-2 pt-1">
+            {post.data.labels.map((label) => <Label>{label}</Label> )}
+          </div>
+        ) : null
+      }
+    </div>
+    {headings.length > 0 && <TableOfContents headings={headings} />}
+    <article class="animate">
+      <Content />
+    </article>
+  </Container>
+</Layout>
